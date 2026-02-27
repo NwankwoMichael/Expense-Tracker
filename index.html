@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Expense Tracker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="module" crossorigin src="/assets/index-WRbNM-eM.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Cp3K2YO3.css">
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Header -->
+      <header class="header">
+        <h1>Expense Tracker 💰</h1>
+      </header>
+
+      <!-- Add Expense Form -->
+      <section class="form-section">
+        <form class="form">
+          <h2 class="sub-header">Add Expense</h2>
+          <div class="form-group">
+            <label class="form-label" for="description">Description</label>
+            <input
+              class="form-input"
+              type="text"
+              id="description"
+              placeholder=""
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="amount">Amount</label>
+            <input
+              class="form-input"
+              type="number"
+              id="amount"
+              placeholder=""
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="category">Category</label>
+            <select class="form-select" id="category">
+              <option value="" selected disabled>Choose category</option>
+              <option class="expense-category-food" value="food">Food</option>
+              <option class="expense-category-transport" value="transport">
+                Transport
+              </option>
+              <option class="expense-category-utilities" value="utilities">
+                Utilities
+              </option>
+              <option class="expense-category-misc" value="miscellaneous">
+                Miscellaneous
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="date">Date</label>
+            <input class="form-input" type="date" id="date" />
+          </div>
+
+          <button class="btn-add" type="submit">Add Expense</button>
+        </form>
+      </section>
+
+      <!-- <div class="right-column"> -->
+      <!-- Expense List -->
+      <section class="list-section">
+        <h2 class="sub-header">Expense List</h2>
+        <div class="filter-container">
+          <button class="filter-btn">Filter</button>
+          <div class="filter-overlay hide">
+            <div class="filter-btn_box">
+              <button class="all">All</button>
+              <button class="food-filter">Food</button>
+              <button class="utilities-filter">Utilities</button>
+              <button class="transport-filter">Transport</button>
+              <button class="misc-filter">Miscellaneous</button>
+              <button class="cancel-filter">&times;</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn-delete_all">
+          <i class="fa fa-ellipsis-h"></i>
+        </button>
+        <div class="table-container">
+          <table class="expense-table">
+            <!-- Table Head -->
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <!-- Table Body -->
+
+            <tbody class="table-body"></tbody>
+
+            <!-- <tbody> -->
+            <!-- First entry -->
+            <!-- <tr class="expense-row">
+              <td class="expense-date">Feb 14, 2026</td>
+              <td class="expense-description">Lunch</td>
+              <td class="expense-category-food">Food</td>
+              <td class="expense-amount">#5,300</td>
+              <td class="expense-actions">
+                
+                <button class="btn-edit" aria-label="Edit expense">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn-delete" aria-label="Delete expense">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr> -->
+
+            <!-- </tbody> -->
+          </table>
+        </div>
+        <!-- Form for editing expense properties -->
+        <div class="form-edit-container hidden">
+          <h3 class="edit-form-header">Edit Expense</h3>
+          <button class="cancel-edit-btn">&times;</button>
+          <form class="form-edit">
+            <input
+              class="edit-input"
+              type="text"
+              id="edit-desc"
+              placeholder="Description"
+            />
+            <input
+              class="edit-input"
+              type="number"
+              id="edit-amount"
+              placeholder="Amount"
+            />
+            <select class="edit-input" id="edit-category">
+              <option value="" selected disabled>Choose category</option>
+              <option value="food" class="expense-category-food">Food</option>
+              <option value="transport" class="expense-category-transport">
+                Transport
+              </option>
+              <option class="expense-category-utilities" value="utilities">
+                Utilities
+              </option>
+              <option class="expense-category-misc" value="miscellaneous">
+                Miscellaneous
+              </option>
+            </select>
+            <input class="edit-input" type="date" id="edit-date" />
+            <button class="edit-submit-btn">&checkmark;</button>
+          </form>
+        </div>
+
+        <!-- Modal for delete all menu btn -->
+        <div class="modal hide">
+          <button class="close-modal">&times;</button>
+          <p class="choice-text">Proceed to delete all expenses?</p>
+          <div class="choice-container">
+            <button class="choice-btn yes-btn">YES</button>
+            <button class="choice-btn no-btn">No</button>
+          </div>
+        </div>
+
+        <div class="success-msg-modal hidden">
+          <p class="success-msg">List successfully deleted!</p>
+          <button class="ok-btn">OK</button>
+        </div>
+
+        <div class="overlay hide"></div>
+      </section>
+
+      <!-- Chart Section -->
+      <section class="chart-section">
+        <h2 class="sub-header">Chart</h2>
+        <!-- Chart.js canvas -->
+        <div class="chart-btns_box">
+          <button id="btn-category">Category Chart</button>
+          <button id="btn-monthly">Monthly Chart</button>
+        </div>
+        <canvas id="expenseChart"></canvas>
+      </section>
+      <!-- </div> -->
+
+      <!-- Summary -->
+      <section class="summary-section">
+        <!-- <h2 class="sub-header">Summary</h2>  -->
+
+        <!-- Overall total -->
+        <!-- <div class="summary-total">
+          <strong>Total Expenses</strong> #25,000
+         </div>
+
+         <div class="summary-container">
+          <div class="summary-block">
+            <h3 class="summary-type">Overall Summary</h3>
+        <ul class="summary-breakdown">
+          <li class="summary-item expense-category-food">
+            Food - <span class="currency">#10,000</span> <span class="summary-percent">(40%)</span>
+            <div class="summary-average">Avg per item: <span class=currency>#2,500</span></div>
+          </li>
+          <li class="summary-item expense-category-transport">
+            Transport -<span class="currency"></span> #7,500 <span class="summary-percent">(30%)</span>
+            <div class="summary-average">Avg per item: <span class="currency"></span>#1,875</div>
+          </li>
+          <li class="summary-item expense-category-utilities">
+            Utilities - <span class="currency"></span>#5,000 <span class="summary-percent">(10%)</span>
+            <div class="summary-average">Avg per item: <span class="currency"></span>#1,250</div>
+          </li>
+          <li class="summary-item expense-category-misc">Misc - <span class="currency"></span>#2,500
+            <span class="summary-percent">(10%)</span>
+            <div class="summary-average">Avg per item: <span class="currency"></span>#625</div>
+          </li>
+        </ul>
+        </div>
+
+        <div class="summary-block">
+          <h3 class="summary-type">Monthly Summary</h3>
+        <ul class="monthly-summary-breakdown">
+          <li class="summary-item expense-category-food monthly">Food - <span class="currency">#2000</span> <span class="summary-percent monthly">(40%)</span>
+          <div class="summary-average monthly">Monthly Avg per item: <span class="currency">#450</span></div>
+        </li>
+        <li class="summary-item expense-category-transport monthly">
+            Transport - <span class="currency">#1,500</span> <span class="summary-percent monthly">(30%)</span>
+            <div class="summary-average monthly">Monthly Avg per item: <span class="currency">#875</span></div>
+          </li>
+          <li class="summary-item expense-category-utilities monthly">
+            Utilities - <span class="currency">#900</span> <span class="summary-percent monthly">(10%)</span>
+            <div class="summary-average monthly">Monthly Avg per item: <span class="currency">#250</span></div>
+          </li>
+          </li>
+          <li class="summary-item expense-category-misc monthly">Misc - <span class="currency">#2,500</span>
+            <span class="summary-percent monthly">(10%)</span>
+            <div class="summary-average monthly">Monthly Avg per item: <span class="currency">#625</span></div>
+          </li>
+        </ul>
+        </div>
+         </div>  -->
+      </section>
+    </div>
+  </body>
+</html>
