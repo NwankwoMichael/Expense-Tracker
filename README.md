@@ -19,7 +19,7 @@ It allows users to add, edit, and delete expenses, filter by category, and view 
 ## 🌐 Live Demo
 
 Check out the hosted version here:  
-[Expense Tracker Live](https://NwankwoMichael.github.io/expense-tracker)
+[Expense Tracker Live](https://nwankwomichael.github.io/Expense-Tracker/)
 
 ## 🚀 Getting Started
 
