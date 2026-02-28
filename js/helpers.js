@@ -49,7 +49,7 @@ export const undoFilterEffects = function (el1, el2, el3, el4) {
   removeClass("hide", el1);
   addClass("hide", el2);
   removeClass("hide", el3);
-  removeClass("hide", el4);
+  removeClass("hidden", el4);
 };
 
 export const fetchLocation = async function (url) {
