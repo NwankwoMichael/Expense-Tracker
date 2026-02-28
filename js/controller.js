@@ -3,7 +3,11 @@ import chartView from "./views/chartView.js";
 import formListView from "./views/formListView.js";
 
 const controlChartView = function (mode = "category") {
-  if (model.state.expenses.length === 0) return;
+  if (model.state.expenses.length === 0) {
+    if (mode === "category") chartView.renderCategoryChart([], []);
+    if (mode === "monthly") chartView.renderMonthlyChart([], []);
+    return;
+  }
 
   if (mode === "category") {
     const categories = {
@@ -12,8 +16,7 @@ const controlChartView = function (mode = "category") {
       transport: 0,
       miscellaneous: 0,
     };
-    const category = Object.keys(categories);
-    category.forEach((cat) => {
+    Object.keys(categories).forEach((cat) => {
       categories[cat] = model.state.expenses
         .filter((exp) => exp.category === cat)
         .reduce((acc, exp) => acc + exp.amount, 0);
@@ -40,7 +43,7 @@ const controlChartView = function (mode = "category") {
   }
 };
 
-const controlFormView = function () {
+const controlFormView = async function () {
   // Get form input
   const data = formListView.getFormData();
 
@@ -55,6 +58,7 @@ const controlFormView = function () {
   //   Render View
   formListView.reRenderExpenseList(model.state.expenses, model.state);
 
+  // Display chart
   controlChartView();
 };
 
@@ -115,9 +119,11 @@ const controlModal = function () {
 
   // Render View
   formListView.renderAllExpenseList(model.state.expenses, model.state);
+
+  // Clear chart too
+  controlChartView();
 };
 
-// Needs fixing
 const controlFilter = function (btn) {
   const filterActive = btn === "cancel" || btn === "all" ? false : true;
 
@@ -140,9 +146,11 @@ const controlFilter = function (btn) {
   }
 };
 
-const controlLoadPage = function (state) {
+const controlLoadPage = function () {
   //   load data
   model.loadData();
+
+  model.initCurrencySymbol();
 
   // Add totalAmount per category
   model.updateSummary();

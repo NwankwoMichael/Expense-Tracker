@@ -7,6 +7,7 @@
 
   /* Base */
   --color-bg: #bdbdbd; /* general background */
+  --color-bg-shade: #868e96;
   --color-lighter-bg: #eee;
   --color-text: #212529; /* main text */
   --color-surface: #ffffff; /* card/form background */
@@ -47,6 +48,7 @@
   margin: 0;
   transition: all 300ms ease-in;
   font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -59,6 +61,20 @@ body {
   font-family: var(--font-body);
   font-size: 1.4rem;
   font-weight: 500;
+}
+
+/* Force styles on interactive elements */
+button {
+  color: inherit;
+}
+
+/* Normalize form controls */
+input,
+select,
+button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 h1,
@@ -606,11 +622,12 @@ td {
   display: flex;
   flex-direction: column;
   justify-content: right;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 #btn-category,
 #btn-monthly {
+  display: none;
   background: linear-gradient(var(--color-food), var(--color-transport));
   padding: 1rem 0.5rem;
   cursor: pointer;
@@ -635,6 +652,28 @@ td {
   width: 100% !important;
   max-width: 50rem;
   height: 30rem !important;
+}
+
+.chart-placeholder {
+  text-align: center;
+  color: var(--color-bg-shade);
+  font-style: italic;
+  padding: 1rem;
+}
+
+.chart-placeholder,
+#expenseChart {
+  transition:
+    opacity 0.3s,
+    ease;
+}
+
+.fade {
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s,
+    ease;
 }
 
 /* Feedback messages */
@@ -793,5 +832,9 @@ td {
 
   .filter-overlay {
     left: -17rem;
+  }
+
+  .filter-btn {
+    padding: 1rem;
   }
 }

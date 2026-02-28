@@ -51,3 +51,29 @@ export const undoFilterEffects = function (el1, el2, el3, el4) {
   removeClass("hide", el3);
   removeClass("hide", el4);
 };
+
+export const fetchLocation = async function (url) {
+  try {
+    const response = await fetch(url);
+    const ipAddress = await response.json();
+    return ipAddress.country;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+/*
+
+👉 In your Expense Tracker workflow, this would look like:
+
+User opens the app.
+
+App detects country via IP.
+
+App maps country to currency symbol.
+
+Expenses are displayed with that symbol.
+
+User can override in settings if needed.
+
+*/

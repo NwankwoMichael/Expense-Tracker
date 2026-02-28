@@ -32,6 +32,7 @@ class FormListView {
   _editedCategoryEl = document.querySelector("#edit-category");
   _editedDateEl = document.querySelector("#edit-date");
   _filterContainerEl = document.querySelector(".filter-container");
+  _filterBtnEl = document.querySelector(".filter-btn");
   _filterOverlayEl = document.querySelector(".filter-overlay");
   _summarySectionEl = document.querySelector(".summary-section");
 
@@ -65,7 +66,7 @@ class FormListView {
     else return lower;
   }
 
-  _generateMarkup(data) {
+  _generateMarkup(data, state) {
     // Cewate row
     const tr = document.createElement("tr");
     tr.classList.add("expense-row");
@@ -94,7 +95,7 @@ class FormListView {
     // Amount cell
     const tdAmount = document.createElement("td");
     tdAmount.classList.add("expense-amount");
-    tdAmount.textContent = `#${data.amount}`;
+    tdAmount.textContent = `${state.currencySymbol}${data.amount}`;
     tr.append(tdAmount);
 
     // Action cell
@@ -130,7 +131,7 @@ class FormListView {
 
        <!-- Overall total -->
          <div class="summary-total">
-          <strong>Total Expenses</strong> <span class="currency total-expenses-span">#${state.totalExpensesAmount}</span>
+          <strong>Total Expenses</strong> <span class="currency total-expenses-span">${state.currencySymbol}${state.totalExpensesAmount}</span>
          </div>
 
          <div class="summary-container">
@@ -151,11 +152,11 @@ class FormListView {
               <li class="summary-item expense-category-${this.formatMarkupCategory(category)}">
               <div class="summary-header">
               <span class="category-name">${this.formatMarkupCategory(category)}</span> - 
-              <span class="currency">#${catData.total}</span>
+              <span class="currency">${state.currencySymbol}${catData.total}</span>
               <span class="summary-percent">(${percent}%)</span>
               </div>
               <div class="summary-average">
-              Avg per item: <span class="currency">#${catData.average.toFixed(2)}</span>
+              Avg per item: <span class="currency">${state.currencySymbol}${catData.average.toFixed(2)}</span>
               </div>
               <div class="summary-bar">
                 <div class="summary-bar-fill expense-category-${this.formatMarkupCategory(category)}" style="width:${percent}%"></div>
@@ -180,16 +181,16 @@ class FormListView {
     const html = `
     <h2 class="summary-header">Summary (Filtered: ${capitalized})</h2>
     <div class="summary-total">
-    <strong>Total ${capitalized} Expenses</strong> <span class="currency total-expenses-span">${state.summary[category].total.toFixed(2)}</span>
+    <strong>Total ${capitalized} Expenses</strong> <span class="currency total-expenses-span">${state.currencySymbol}${state.summary[category].total.toFixed(2)}</span>
     </div>
     <div class="summary-average">
-    Avg per item: <span class="currency">${state.summary[category].average.toFixed(2)}</span>
+    Avg per item: <span class="currency">${state.currencySymbol}${state.summary[category].average.toFixed(2)}</span>
     </div>
     <div class="summary-bar">
     <div class="summary-bar-fill expense-category-${this.formatMarkupCategory(category)}" style="width:${((state.summary[category].total / state.totalExpensesAmount) * 100).toFixed(1)}%"></div>
     </div>
     <div class="summary-context">
-    <small>Overall total accross all categories: #${state.totalExpensesAmount}</small>
+    <small>Overall total accross all categories: ${state.currencySymbol}${state.totalExpensesAmount}</small>
     </div>
     `;
     this._summarySectionEl.innerHTML = "";
@@ -201,11 +202,14 @@ class FormListView {
     if (expenses.length === 0) {
       // Checking the length of expenses
       this._toggleDeleteAllButton(expenses);
+      addClass("hide", this._filterBtnEl);
+
+      // Hide filter button and clear chart
       return;
     }
     const lastExpense = expenses[expenses.length - 1];
 
-    const row = this._generateMarkup(lastExpense);
+    const row = this._generateMarkup(lastExpense, state);
 
     this._tbodyEl.appendChild(row);
 
@@ -228,7 +232,7 @@ class FormListView {
 
     expenses.forEach((expense) => {
       // Generate row dynamically
-      const row = this._generateMarkup(expense);
+      const row = this._generateMarkup(expense, state);
 
       // Append row to tbody
       this._tbodyEl.appendChild(row);
@@ -253,7 +257,7 @@ class FormListView {
     if (!curExpenseRow) return;
 
     // Generate new markup for the updated expenses
-    const updatedRow = this._generateMarkup(updatedExpense);
+    const updatedRow = this._generateMarkup(updatedExpense, state);
 
     // Replace old row with updated row
     curExpenseRow.replaceWith(updatedRow);
@@ -275,7 +279,7 @@ class FormListView {
     const filtered = expenses.filter((exp) => exp.category === category);
 
     filtered.forEach((exp) => {
-      const row = this._generateMarkup(exp);
+      const row = this._generateMarkup(exp, state);
       this._tbodyEl.appendChild(row);
     });
 
@@ -294,12 +298,14 @@ class FormListView {
 
       // Hiding the deleteAll Button
       addClass("hidden", this._deleteAllBtnEl);
+      addClass("hide", this._filterBtnEl);
     } else {
       const noExpenseRow = this._tbodyEl.querySelector(".no-expense");
       if (noExpenseRow) noExpenseRow.remove();
 
       // Display the deleteAll button
       removeClass("hidden", this._deleteAllBtnEl);
+      removeClass("hide", this._filterBtnEl);
     }
   }
 

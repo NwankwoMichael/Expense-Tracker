@@ -1,5 +1,5 @@
-import { getRandomInt, formattedDate } from "./helpers.js";
-import { MIN, MAX } from "./config.js";
+import { getRandomInt, fetchLocation, formattedDate } from "./helpers.js";
+import { MIN, MAX, IPINFO } from "./config.js";
 
 // EXTERNAL LIBRARIES
 import { format } from "date-fns";
@@ -14,6 +14,13 @@ export const state = {
     miscellaneous: { total: 0, average: 0 },
   },
   totalExpensesAmount: 0,
+  currencySymbol: "$",
+};
+
+// Async function for fetching country code
+export const initCurrencySymbol = async function () {
+  const countryCode = await fetchLocation(IPINFO);
+  state.currencySymbol = currencyMap[countryCode] || "$";
 };
 
 // Function for calculating total expenses
@@ -133,11 +140,15 @@ export const deleteAllExpenses = function () {
 // Persist data
 export const persistData = function () {
   localStorage.setItem("expenses", JSON.stringify(state.expenses));
+  localStorage.setItem("currencySymbol", state.currencySymbol);
 };
 
 export const loadData = function () {
-  const storage = localStorage.getItem("expenses");
-  if (storage) state.expenses = JSON.parse(storage);
+  const expenses = JSON.parse(localStorage.getItem("expenses"));
+  const symbol = localStorage.getItem("currencySymbol");
+
+  if (expenses) state.expenses = expenses;
+  if (symbol) state.currencySymbol = symbol;
 };
 
 // Filter by category function
@@ -165,4 +176,15 @@ export const getMonthlySummary = function () {
     summary[monthKey] += +exp.amount || 0;
   });
   return summary;
+};
+
+export const currencyMap = {
+  NG: "₦", // Nigeria → Naira
+  GH: "₵", // Ghana → Cedi
+  US: "$", // USA → Dollar
+  DE: "€", // Germany → Euro
+  FR: "€", // France → Euro
+  IT: "€", // Italy → Euro
+  ES: "€", // Spain → Euro
+  GB: "£", // United Kingdom → Pound Sterling
 };
