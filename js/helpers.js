@@ -61,19 +61,3 @@ export const fetchLocation = async function (url) {
     console.error(err);
   }
 };
-
-/*
-
-👉 In your Expense Tracker workflow, this would look like:
-
-User opens the app.
-
-App detects country via IP.
-
-App maps country to currency symbol.
-
-Expenses are displayed with that symbol.
-
-User can override in settings if needed.
-
-*/

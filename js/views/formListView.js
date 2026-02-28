@@ -558,13 +558,25 @@ class FormListView {
         btn = "all";
       }
 
-      if (foodFilterBtn) btn = "food";
+      if (foodFilterBtn) {
+        addClass("hidden", this._filterBtnEl);
+        btn = "food";
+      }
 
-      if (utilitiesFilterBtn) btn = "utilities";
+      if (utilitiesFilterBtn) {
+        addClass("hidden", this._filterBtnEl);
+        btn = "utilities";
+      }
 
-      if (transportFilterBtn) btn = "transport";
+      if (transportFilterBtn) {
+        addClass("hidden", this._filterBtnEl);
+        btn = "transport";
+      }
 
-      if (miscFilterBtn) btn = "miscellaneous";
+      if (miscFilterBtn) {
+        addClass("hidden", this._filterBtnEl);
+        btn = "miscellaneous";
+      }
 
       if (cancelFilterBtn) {
         // Initialize filter button
